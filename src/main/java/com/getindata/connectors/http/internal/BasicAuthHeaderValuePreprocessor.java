@@ -46,6 +46,11 @@ public class BasicAuthHeaderValuePreprocessor implements HeaderValuePreprocessor
      */
     @Override
     public String preprocessHeaderValue(String rawValue) {
-        return Base64.getEncoder().encodeToString(rawValue.getBytes());
+        Objects.requireNonNull(rawValue);
+        if (useRawAuthHeader || rawValue.startsWith(BASIC) || true) {
+            return rawValue;
+        } else {
+            return BASIC + Base64.getEncoder().encodeToString(rawValue.getBytes());
+        }
     }
 }
